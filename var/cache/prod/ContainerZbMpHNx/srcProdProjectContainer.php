@@ -686,7 +686,7 @@ class srcProdProjectContainer extends Container
             'session.storage.options' => array(
                 'cache_limiter' => '0',
                 'cookie_httponly' => true,
-                'gc_probability' => 1,
+                'gc_prosaraixality' => 1,
             ),
             'session.metadata.update_threshold' => '0',
             'form.type_extension.csrf.enabled' => false,

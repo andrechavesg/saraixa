@@ -1,0 +1,34 @@
+version: '3'
+services:
+  apache:
+    build: .docker/apache
+    container_name: saraixa_apache
+    ports:
+      - 80:80
+    volumes:
+      - .docker/config/vhosts:/etc/apache2/sites-enabled
+      - .:/home/wwwroot/saraixa
+      - .docker/logs/apache:/var/log/apache2/
+    depends_on:
+      - php
+
+  mysql:
+    image: mysql
+    command: "--default-authentication-plugin=mysql_native_password"
+    container_name: saraixa_mysql
+    volumes:
+      - .docker/data/db:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: x5c2bgwj
+      MYSQL_DATABASE: saraixa
+      MYSQL_USER: saraixa
+      MYSQL_PASSWORD: x5c2bgwj
+    ports:
+      - 33061:3306
+  php:
+    build: .docker/php
+    container_name: saraixa_php
+    volumes:
+      - .:/home/wwwroot/saraixa
+    depends_on:
+      - mysql

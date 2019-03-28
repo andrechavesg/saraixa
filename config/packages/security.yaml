@@ -2,8 +2,12 @@
 
 security:
     encoders:
-        App\Entity\User:
+        # USER PROVIDER - Classe do usuário do sistema
+        App\Entity\Usuario:
+            # ALGORITMO
             algorithm: bcrypt
+            # "Força" da criptografia, entre 1 e 64
+            cost: 10
 
     # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
     providers:

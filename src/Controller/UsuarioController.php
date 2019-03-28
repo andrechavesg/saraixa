@@ -7,6 +7,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class UsuarioController extends Controller
 {
@@ -41,7 +42,7 @@ class UsuarioController extends Controller
     /**
      * @Route("/usuario/novo",methods="POST")
      */
-    public function cria(Request $request)
+    public function cria(Request $request,UserPasswordEncoderInterface $encoder)
     {
         $usuario = new Usuario();
 
@@ -53,9 +54,12 @@ class UsuarioController extends Controller
                 "choices" => [
                     "Biblíotecario" => "ROLE_BIBLIOTECARIO", "Atendente" => "ROLE_ATENDENTE"
                 ]
-            ])            ->getForm();
+            ])->getForm();
 
         $form->handleRequest($request);
+
+        $senhaCriptografada = $encoder->encodePassword($usuario,$usuario->getSenha());
+        $usuario->setSenha($senhaCriptografada);
 
         $em = $this->getDoctrine()->getManager();
         $em->persist($usuario);
